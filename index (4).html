@@ -1,0 +1,523 @@
+<html><head><base href="/dashboard/payroll/dashboard/payroll/requests">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Solicitações - Graça sobre Graça</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+
+<style>
+:root {
+  --primary: #2a1b6d;
+  --secondary: #38b6ff;
+  --success: #2ecc71;
+  --warning: #f1c40f;
+  --danger: #e74c3c;
+  --light: #f8f9fa;
+  --dark: #2d3436;
+  --gradient: linear-gradient(135deg, var(--primary), var(--secondary));
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Poppins', sans-serif;
+}
+
+body {
+  background: #f0f2f5;
+  min-height: 100vh;
+}
+
+.dashboard-container {
+  display: flex;
+  min-height: 100vh;
+}
+
+.sidebar {
+  width: 280px;
+  background: white;
+  padding: 2rem;
+  box-shadow: 2px 0 20px rgba(0,0,0,0.1);
+}
+
+.sidebar-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+.sidebar-logo {
+  width: 100px;
+  height: auto;
+  margin-right: 1rem;
+}
+
+.menu-item {
+  display: flex;
+  align-items: center;
+  padding: 1rem;
+  color: var(--dark);
+  text-decoration: none;
+  border-radius: 10px;
+  margin-bottom: 0.5rem;
+  transition: all 0.3s;
+}
+
+.menu-item i {
+  margin-right: 1rem;
+  font-size: 1.2rem;
+}
+
+.menu-item:hover {
+  background: var(--gradient);
+  color: white;
+  transform: translateX(5px);
+}
+
+.menu-item.active {
+  background: var(--gradient);
+  color: white;
+}
+
+.main-content {
+  flex: 1;
+  padding: 2rem;
+}
+
+.requests-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+.requests-title {
+  color: var(--primary);
+  font-size: 1.8rem;
+}
+
+.new-request-btn {
+  padding: 0.8rem 1.5rem;
+  background: var(--gradient);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: all 0.3s;
+}
+
+.new-request-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.requests-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 2rem;
+}
+
+.requests-list {
+  background: white;
+  padding: 1.5rem;
+  border-radius: 15px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+.request-filters {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.filter-btn {
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.3s;
+}
+
+.filter-btn.active {
+  background: var(--gradient);
+  color: white;
+}
+
+.request-item {
+  padding: 1.5rem;
+  border-radius: 10px;
+  background: #f8f9fa;
+  margin-bottom: 1rem;
+  transition: all 0.3s;
+}
+
+.request-item:hover {
+  transform: translateX(5px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.request-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.request-type {
+  font-weight: 600;
+  color: var(--primary);
+}
+
+.request-status {
+  padding: 0.3rem 1rem;
+  border-radius: 20px;
+  font-size: 0.9rem;
+}
+
+.status-pending {
+  background: #fff3cd;
+  color: #856404;
+}
+
+.status-approved {
+  background: #d4edda;
+  color: #155724;
+}
+
+.status-rejected {
+  background: #f8d7da;
+  color: #721c24;
+}
+
+.request-dates {
+  display: flex;
+  gap: 2rem;
+  margin-bottom: 0.5rem;
+  color: #666;
+  font-size: 0.9rem;
+}
+
+.request-description {
+  color: #666;
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+.request-summary {
+  background: white;
+  padding: 1.5rem;
+  border-radius: 15px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+.summary-title {
+  color: var(--primary);
+  font-size: 1.2rem;
+  margin-bottom: 1.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 2px solid #f0f2f5;
+}
+
+.summary-stats {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.stat-card {
+  padding: 1rem;
+  border-radius: 10px;
+  background: #f8f9fa;
+  text-align: center;
+}
+
+.stat-value {
+  font-size: 1.8rem;
+  font-weight: 600;
+  color: var(--primary);
+  margin-bottom: 0.5rem;
+}
+
+.stat-label {
+  color: #666;
+  font-size: 0.9rem;
+}
+
+.request-form {
+  display: none;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: white;
+  padding: 2rem;
+  border-radius: 15px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+  width: 90%;
+  max-width: 600px;
+  z-index: 1000;
+}
+
+.form-group {
+  margin-bottom: 1.5rem;
+}
+
+.form-label {
+  display: block;
+  margin-bottom: 0.5rem;
+  color: var(--dark);
+  font-weight: 500;
+}
+
+.form-input,
+.form-select,
+.form-textarea {
+  width: 100%;
+  padding: 0.8rem;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 1rem;
+}
+
+.form-textarea {
+  height: 120px;
+  resize: vertical;
+}
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+.modal-overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.5);
+  z-index: 999;
+}
+
+</style>
+</head>
+<body>
+
+<div class="dashboard-container">
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <img src="/a/2f069ac4-a9ac-4e73-b5d1-45799dbf53aa" alt="Logo Graça sobre Graça" class="sidebar-logo" width="100" height="100">
+    </div>
+    
+    <nav>
+      <a href="/dashboard" class="menu-item">
+        <i class="fas fa-home"></i>
+        Dashboard
+      </a>
+      <a href="/dashboard/payroll/profile" class="menu-item">
+        <i class="fas fa-user"></i>
+        Perfil
+      </a>
+      <a href="/dashboard/payroll/attendance" class="menu-item">
+        <i class="fas fa-calendar-check"></i>
+        Presenças
+      </a>
+      <a href="/dashboard/payroll/requests" class="menu-item active">
+        <i class="fas fa-paper-plane"></i>
+        Solicitações
+      </a>
+      <a href="/dashboard/payroll" class="menu-item">
+        <i class="fas fa-money-bill-wave"></i>
+        Remunerações
+      </a>
+      <a href="/settings" class="menu-item">
+        <i class="fas fa-cog"></i>
+        Configurações
+      </a>
+      <a href="/login" class="menu-item">
+        <i class="fas fa-sign-out-alt"></i>
+        Sair
+      </a>
+    </nav>
+  </aside>
+
+  <main class="main-content">
+    <div class="requests-header">
+      <h1 class="requests-title">Minhas Solicitações</h1>
+      <button class="new-request-btn" onclick="showRequestForm()">
+        <i class="fas fa-plus"></i>
+        Nova Solicitação
+      </button>
+    </div>
+
+    <div class="requests-grid">
+      <div class="requests-list">
+        <div class="request-filters">
+          <button class="filter-btn active">Todas</button>
+          <button class="filter-btn">Pendentes</button>
+          <button class="filter-btn">Aprovadas</button>
+          <button class="filter-btn">Rejeitadas</button>
+        </div>
+
+        <div class="request-item">
+          <div class="request-header">
+            <span class="request-type">Férias</span>
+            <span class="request-status status-pending">Pendente</span>
+          </div>
+          <div class="request-dates">
+            <span><i class="far fa-calendar"></i> 01/03/2024 - 15/03/2024</span>
+            <span><i class="far fa-clock"></i> Submetido em 15/01/2024</span>
+          </div>
+          <p class="request-description">
+            Solicitação de férias para descanso e viagem familiar programada.
+          </p>
+        </div>
+
+        <div class="request-item">
+          <div class="request-header">
+            <span class="request-type">Licença Médica</span>
+            <span class="request-status status-approved">Aprovada</span>
+          </div>
+          <div class="request-dates">
+            <span><i class="far fa-calendar"></i> 10/01/2024 - 12/01/2024</span>
+            <span><i class="far fa-clock"></i> Submetido em 09/01/2024</span>
+          </div>
+          <p class="request-description">
+            Atestado médico para tratamento de gripe.
+          </p>
+        </div>
+
+        <div class="request-item">
+          <div class="request-header">
+            <span class="request-type">Folga</span>
+            <span class="request-status status-rejected">Rejeitada</span>
+          </div>
+          <div class="request-dates">
+            <span><i class="far fa-calendar"></i> 05/01/2024</span>
+            <span><i class="far fa-clock"></i> Submetido em 03/01/2024</span>
+          </div>
+          <p class="request-description">
+            Solicitação de folga para resolver assuntos pessoais.
+          </p>
+        </div>
+      </div>
+
+      <div class="request-summary">
+        <h2 class="summary-title">Resumo de Solicitações</h2>
+        <div class="summary-stats">
+          <div class="stat-card">
+            <div class="stat-value">3</div>
+            <div class="stat-label">Total</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-value">1</div>
+            <div class="stat-label">Pendentes</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-value">1</div>
+            <div class="stat-label">Aprovadas</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-value">1</div>
+            <div class="stat-label">Rejeitadas</div>
+          </div>
+        </div>
+
+        <h3 class="summary-title">Dias Disponíveis</h3>
+        <div class="summary-stats">
+          <div class="stat-card">
+            <div class="stat-value">15</div>
+            <div class="stat-label">Férias</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-value">5</div>
+            <div class="stat-label">Folgas</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<!-- Modal de Nova Solicitação -->
+<div class="modal-overlay" id="modalOverlay"></div>
+<div class="request-form" id="requestForm">
+  <h2 class="summary-title">Nova Solicitação</h2>
+  
+  <div class="form-group">
+    <label class="form-label">Tipo de Solicitação</label>
+    <select class="form-select">
+      <option>Férias</option>
+      <option>Folga</option>
+      <option>Licença Médica</option>
+      <option>Outros</option>
+    </select>
+  </div>
+
+  <div class="form-group">
+    <label class="form-label">Data de Início</label>
+    <input type="date" class="form-input">
+  </div>
+
+  <div class="form-group">
+    <label class="form-label">Data de Fim</label>
+    <input type="date" class="form-input">
+  </div>
+
+  <div class="form-group">
+    <label class="form-label">Justificativa</label>
+    <textarea class="form-textarea" placeholder="Descreva o motivo da sua solicitação..."></textarea>
+  </div>
+
+  <div class="form-actions">
+    <button class="control-button secondary-button" onclick="hideRequestForm()">
+      Cancelar
+    </button>
+    <button class="control-button primary-button" onclick="submitRequest()">
+      Enviar Solicitação
+    </button>
+  </div>
+</div>
+
+<script>
+function showRequestForm() {
+  document.getElementById('modalOverlay').style.display = 'block';
+  document.getElementById('requestForm').style.display = 'block';
+}
+
+function hideRequestForm() {
+  document.getElementById('modalOverlay').style.display = 'none';
+  document.getElementById('requestForm').style.display = 'none';
+}
+
+function submitRequest() {
+  // Aqui você implementaria a lógica para enviar a solicitação
+  alert('Solicitação enviada com sucesso!');
+  hideRequestForm();
+}
+
+// Event Listeners para os filtros
+document.querySelectorAll('.filter-btn').forEach(button => {
+  button.addEventListener('click', function() {
+    // Remove active class from all buttons
+    document.querySelectorAll('.filter-btn').forEach(btn => {
+      btn.classList.remove('active');
+    });
+    // Add active class to clicked button
+    this.classList.add('active');
+  });
+});
+</script>
+
+</body></html>

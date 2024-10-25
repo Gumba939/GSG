@@ -1,0 +1,460 @@
+<html><head><base href="/dashboard/payroll/dashboard/payroll/attendance">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Presenças - Graça sobre Graça</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.css" rel="stylesheet">
+
+<style>
+:root {
+  --primary: #2a1b6d;
+  --secondary: #38b6ff;
+  --success: #2ecc71;
+  --warning: #f1c40f;
+  --danger: #e74c3c;
+  --light: #f8f9fa;
+  --dark: #2d3436;
+  --gradient: linear-gradient(135deg, var(--primary), var(--secondary));
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Poppins', sans-serif;
+}
+
+body {
+  background: #f0f2f5;
+  min-height: 100vh;
+}
+
+.dashboard-container {
+  display: flex;
+  min-height: 100vh;
+}
+
+.sidebar {
+  width: 280px;
+  background: white;
+  padding: 2rem;
+  box-shadow: 2px 0 20px rgba(0,0,0,0.1);
+}
+
+.sidebar-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+.sidebar-logo {
+  width: 100px;
+  height: auto;
+  margin-right: 1rem;
+}
+
+.menu-item {
+  display: flex;
+  align-items: center;
+  padding: 1rem;
+  color: var(--dark);
+  text-decoration: none;
+  border-radius: 10px;
+  margin-bottom: 0.5rem;
+  transition: all 0.3s;
+}
+
+.menu-item i {
+  margin-right: 1rem;
+  font-size: 1.2rem;
+}
+
+.menu-item:hover {
+  background: var(--gradient);
+  color: white;
+  transform: translateX(5px);
+}
+
+.menu-item.active {
+  background: var(--gradient);
+  color: white;
+}
+
+.main-content {
+  flex: 1;
+  padding: 2rem;
+}
+
+.attendance-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+.attendance-title {
+  color: var(--primary);
+  font-size: 1.8rem;
+}
+
+.attendance-controls {
+  display: flex;
+  gap: 1rem;
+}
+
+.control-button {
+  padding: 0.8rem 1.5rem;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: all 0.3s;
+}
+
+.primary-button {
+  background: var(--gradient);
+  color: white;
+}
+
+.secondary-button {
+  background: var(--light);
+  color: var(--dark);
+}
+
+.control-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.attendance-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 2rem;
+}
+
+.calendar-container {
+  background: white;
+  padding: 1.5rem;
+  border-radius: 15px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+.summary-container {
+  background: white;
+  padding: 1.5rem;
+  border-radius: 15px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+.summary-title {
+  color: var(--primary);
+  font-size: 1.2rem;
+  margin-bottom: 1.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 2px solid #f0f2f5;
+}
+
+.summary-stats {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+}
+
+.stat-card {
+  padding: 1rem;
+  border-radius: 10px;
+  background: #f8f9fa;
+}
+
+.stat-value {
+  font-size: 2rem;
+  font-weight: 600;
+  color: var(--primary);
+  margin-bottom: 0.5rem;
+}
+
+.stat-label {
+  color: #666;
+  font-size: 0.9rem;
+}
+
+.recent-activity {
+  margin-top: 2rem;
+}
+
+.activity-item {
+  display: flex;
+  align-items: center;
+  padding: 1rem 0;
+  border-bottom: 1px solid #eee;
+}
+
+.activity-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 1rem;
+}
+
+.activity-icon.check-in {
+  background: #e8f5e9;
+  color: var(--success);
+}
+
+.activity-icon.check-out {
+  background: #ffebee;
+  color: var(--danger);
+}
+
+.activity-info {
+  flex: 1;
+}
+
+.activity-time {
+  font-weight: 500;
+  margin-bottom: 0.2rem;
+}
+
+.activity-date {
+  font-size: 0.9rem;
+  color: #666;
+}
+
+.fc-event {
+  border: none !important;
+  padding: 3px 5px;
+}
+
+.fc-event-present {
+  background-color: var(--success) !important;
+}
+
+.fc-event-absent {
+  background-color: var(--danger) !important;
+}
+
+.fc-event-late {
+  background-color: var(--warning) !important;
+}
+
+#attendance-chart {
+  margin-top: 2rem;
+  height: 200px;
+}
+
+.punch-button {
+  width: 100%;
+  padding: 1rem;
+  margin-top: 1rem;
+  border: none;
+  border-radius: 8px;
+  background: var(--gradient);
+  color: white;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.punch-button:hover {
+  opacity: 0.9;
+  transform: translateY(-2px);
+}
+
+.punch-button:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+}
+
+</style>
+</head>
+<body>
+
+<div class="dashboard-container">
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <img src="/a/2f069ac4-a9ac-4e73-b5d1-45799dbf53aa" alt="Logo Graça sobre Graça" class="sidebar-logo" width="100" height="100">
+    </div>
+    
+    <nav>
+      <a href="/dashboard" class="menu-item">
+        <i class="fas fa-home"></i>
+        Dashboard
+      </a>
+      <a href="/dashboard/payroll/profile" class="menu-item">
+        <i class="fas fa-user"></i>
+        Perfil
+      </a>
+      <a href="/dashboard/payroll/attendance" class="menu-item active">
+        <i class="fas fa-calendar-check"></i>
+        Presenças
+      </a>
+      <a href="/dashboard/payroll/requests" class="menu-item">
+        <i class="fas fa-paper-plane"></i>
+        Solicitações
+      </a>
+      <a href="/dashboard/payroll" class="menu-item">
+        <i class="fas fa-money-bill-wave"></i>
+        Remunerações
+      </a>
+      <a href="/settings" class="menu-item">
+        <i class="fas fa-cog"></i>
+        Configurações
+      </a>
+      <a href="/login" class="menu-item">
+        <i class="fas fa-sign-out-alt"></i>
+        Sair
+      </a>
+    </nav>
+  </aside>
+
+  <main class="main-content">
+    <div class="attendance-header">
+      <h1 class="attendance-title">Controle de Presenças</h1>
+      <div class="attendance-controls">
+        <button class="control-button secondary-button">
+          <i class="fas fa-download"></i>
+          Exportar Relatório
+        </button>
+        <button class="control-button primary-button">
+          <i class="fas fa-plus"></i>
+          Nova Justificativa
+        </button>
+      </div>
+    </div>
+
+    <div class="attendance-grid">
+      <div class="calendar-container">
+        <div id="calendar"></div>
+      </div>
+
+      <div class="summary-container">
+        <h2 class="summary-title">Resumo do Mês</h2>
+        <div class="summary-stats">
+          <div class="stat-card">
+            <div class="stat-value">22</div>
+            <div class="stat-label">Dias Presentes</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-value">2</div>
+            <div class="stat-label">Faltas</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-value">1</div>
+            <div class="stat-label">Atrasos</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-value">3</div>
+            <div class="stat-label">Justificativas</div>
+          </div>
+        </div>
+
+        <button id="punchButton" class="punch-button">
+          Registrar Ponto
+        </button>
+
+        <div class="recent-activity">
+          <h3 class="summary-title">Atividade Recente</h3>
+          <div class="activity-item">
+            <div class="activity-icon check-in">
+              <i class="fas fa-sign-in-alt"></i>
+            </div>
+            <div class="activity-info">
+              <div class="activity-time">Entrada: 08:00</div>
+              <div class="activity-date">Hoje</div>
+            </div>
+          </div>
+          <div class="activity-item">
+            <div class="activity-icon check-out">
+              <i class="fas fa-sign-out-alt"></i>
+            </div>
+            <div class="activity-info">
+              <div class="activity-time">Saída: 17:00</div>
+              <div class="activity-date">Ontem</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  // Inicialização do FullCalendar
+  var calendarEl = document.getElementById('calendar');
+  var calendar = new FullCalendar.Calendar(calendarEl, {
+    initialView: 'dayGridMonth',
+    headerToolbar: {
+      left: 'prev,next today',
+      center: 'title',
+      right: 'dayGridMonth,timeGridWeek,timeGridDay'
+    },
+    events: [
+      {
+        title: 'Presente',
+        start: '2024-01-15',
+        className: 'fc-event-present'
+      },
+      {
+        title: 'Atrasado',
+        start: '2024-01-16',
+        className: 'fc-event-late'
+      },
+      {
+        title: 'Falta',
+        start: '2024-01-17',
+        className: 'fc-event-absent'
+      }
+    ],
+    locale: 'pt-br'
+  });
+  calendar.render();
+
+  // Sistema de Ponto
+  const punchButton = document.getElementById('punchButton');
+  let isPunchedIn = false;
+
+  punchButton.addEventListener('click', function() {
+    const now = new Date();
+    const time = now.toLocaleTimeString();
+    
+    if (!isPunchedIn) {
+      createActivityRecord('entrada', time);
+      punchButton.textContent = 'Registrar Saída';
+      isPunchedIn = true;
+    } else {
+      createActivityRecord('saída', time);
+      punchButton.textContent = 'Registrar Entrada';
+      isPunchedIn = false;
+    }
+  });
+
+  function createActivityRecord(type, time) {
+    const activityHTML = `
+      <div class="activity-item">
+        <div class="activity-icon ${type === 'entrada' ? 'check-in' : 'check-out'}">
+          <i class="fas fa-sign-${type === 'entrada' ? 'in' : 'out'}-alt"></i>
+        </div>
+        <div class="activity-info">
+          <div class="activity-time">${type.charAt(0).toUpperCase() + type.slice(1)}: ${time}</div>
+          <div class="activity-date">Hoje</div>
+        </div>
+      </div>
+    `;
+
+    const recentActivity = document.querySelector('.recent-activity');
+    recentActivity.insertAdjacentHTML('afterbegin', activityHTML);
+  }
+});
+</script>
+
+</body></html>

@@ -1,0 +1,435 @@
+<html><head><base href="/dashboard/payroll/dashboard/payroll/profile">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Perfil - Graça sobre Graça</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+
+<style>
+:root {
+  --primary: #2a1b6d;
+  --secondary: #38b6ff;
+  --success: #2ecc71;
+  --warning: #f1c40f;
+  --danger: #e74c3c;
+  --light: #f8f9fa;
+  --dark: #2d3436;
+  --gradient: linear-gradient(135deg, var(--primary), var(--secondary));
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Poppins', sans-serif;
+}
+
+body {
+  background: #f0f2f5;
+  min-height: 100vh;
+}
+
+.dashboard-container {
+  display: flex;
+  min-height: 100vh;
+}
+
+.sidebar {
+  width: 280px;
+  background: white;
+  padding: 2rem;
+  box-shadow: 2px 0 20px rgba(0,0,0,0.1);
+}
+
+.sidebar-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+.sidebar-logo {
+  width: 100px;
+  height: auto;
+  margin-right: 1rem;
+}
+
+.menu-item {
+  display: flex;
+  align-items: center;
+  padding: 1rem;
+  color: var(--dark);
+  text-decoration: none;
+  border-radius: 10px;
+  margin-bottom: 0.5rem;
+  transition: all 0.3s;
+}
+
+.menu-item i {
+  margin-right: 1rem;
+  font-size: 1.2rem;
+}
+
+.menu-item:hover {
+  background: var(--gradient);
+  color: white;
+  transform: translateX(5px);
+}
+
+.menu-item.active {
+  background: var(--gradient);
+  color: white;
+}
+
+.main-content {
+  flex: 1;
+  padding: 2rem;
+}
+
+.profile-container {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.profile-header {
+  background: var(--gradient);
+  color: white;
+  padding: 2rem;
+  border-radius: 15px;
+  margin-bottom: 2rem;
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+}
+
+.profile-avatar {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  background: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 3rem;
+  color: var(--primary);
+}
+
+.profile-info h1 {
+  font-size: 1.8rem;
+  margin-bottom: 0.5rem;
+}
+
+.profile-info p {
+  opacity: 0.9;
+}
+
+.profile-sections {
+  display: grid;
+  gap: 1.5rem;
+}
+
+.section-card {
+  background: white;
+  padding: 1.5rem;
+  border-radius: 15px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 2px solid #f0f2f5;
+}
+
+.section-title {
+  font-size: 1.2rem;
+  color: var(--primary);
+  font-weight: 600;
+}
+
+.edit-button {
+  background: var(--gradient);
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: opacity 0.3s;
+}
+
+.edit-button:hover {
+  opacity: 0.9;
+}
+
+.info-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1.5rem;
+}
+
+.info-item {
+  padding: 1rem;
+  border-radius: 10px;
+  background: #f8f9fa;
+}
+
+.info-label {
+  font-size: 0.9rem;
+  color: #666;
+  margin-bottom: 0.5rem;
+}
+
+.info-value {
+  font-weight: 500;
+  color: var(--dark);
+}
+
+.documents-list {
+  list-style: none;
+}
+
+.document-item {
+  display: flex;
+  align-items: center;
+  padding: 1rem;
+  border-bottom: 1px solid #eee;
+}
+
+.document-item:last-child {
+  border-bottom: none;
+}
+
+.document-icon {
+  width: 40px;
+  height: 40px;
+  background: var(--light);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 1rem;
+}
+
+.document-info {
+  flex: 1;
+}
+
+.document-title {
+  font-weight: 500;
+  margin-bottom: 0.2rem;
+}
+
+.document-date {
+  font-size: 0.9rem;
+  color: #666;
+}
+
+.document-action {
+  color: var(--primary);
+  text-decoration: none;
+  font-size: 0.9rem;
+}
+
+.currency-kwanza {
+  position: relative;
+}
+
+.currency-kwanza::after {
+  content: 'Kz';
+  margin-left: 4px;
+  font-size: 0.8em;
+  opacity: 0.8;
+}
+
+</style>
+</head>
+<body>
+
+<div class="dashboard-container">
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <img src="/a/2f069ac4-a9ac-4e73-b5d1-45799dbf53aa" alt="Logo Graça sobre Graça" class="sidebar-logo" width="100" height="100">
+    </div>
+    
+    <nav>
+      <a href="/dashboard" class="menu-item">
+        <i class="fas fa-home"></i>
+        Dashboard
+      </a>
+      <a href="/dashboard/payroll/profile" class="menu-item active">
+        <i class="fas fa-user"></i>
+        Perfil
+      </a>
+      <a href="/dashboard/payroll/attendance" class="menu-item">
+        <i class="fas fa-calendar-check"></i>
+        Presenças
+      </a>
+      <a href="/dashboard/payroll/requests" class="menu-item">
+        <i class="fas fa-paper-plane"></i>
+        Solicitações
+      </a>
+      <a href="/dashboard/payroll" class="menu-item">
+        <i class="fas fa-money-bill-wave"></i>
+        Remunerações
+      </a>
+      <a href="/settings" class="menu-item">
+        <i class="fas fa-cog"></i>
+        Configurações
+      </a>
+      <a href="#" class="menu-item" onclick="handleLogout()">
+        <i class="fas fa-sign-out-alt"></i>
+        Sair
+      </a>
+    </nav>
+  </aside>
+
+  <main class="main-content">
+    <div class="profile-container">
+      <div class="profile-header">
+        <div class="profile-avatar">
+          <i class="fas fa-user"></i>
+        </div>
+        <div class="profile-info">
+          <h1>Perfil do Funcionário</h1>
+          <p>ID: #<span id="employeeId">001</span></p>
+        </div>
+      </div>
+
+      <div class="profile-sections">
+        <section class="section-card">
+          <div class="section-header">
+            <h2 class="section-title">Informações Pessoais</h2>
+            <button class="edit-button" onclick="editPersonalInfo()">
+              <i class="fas fa-edit"></i> Editar
+            </button>
+          </div>
+          <div class="info-grid">
+            <div class="info-item">
+              <div class="info-label">Nome Completo</div>
+              <div class="info-value" id="fullName">Nome do Funcionário</div>
+            </div>
+            <div class="info-item">
+              <div class="info-label">Data de Nascimento</div>
+              <div class="info-value" id="birthDate">01/01/1990</div>
+            </div>
+            <div class="info-item">
+              <div class="info-label">E-mail</div>
+              <div class="info-value" id="email">funcionario@gracasobregraca.com</div>
+            </div>
+            <div class="info-item">
+              <div class="info-label">Telefone</div>
+              <div class="info-value" id="phone">+244 923 456 789</div>
+            </div>
+          </div>
+        </section>
+
+        <section class="section-card">
+          <div class="section-header">
+            <h2 class="section-title">Informações Profissionais</h2>
+          </div>
+          <div class="info-grid">
+            <div class="info-item">
+              <div class="info-label">Cargo</div>
+              <div class="info-value" id="position">Analista</div>
+            </div>
+            <div class="info-item">
+              <div class="info-label">Departamento</div>
+              <div class="info-value" id="department">Tecnologia</div>
+            </div>
+            <div class="info-item">
+              <div class="info-label">Data de Admissão</div>
+              <div class="info-value" id="hireDate">01/01/2023</div>
+            </div>
+            <div class="info-item">
+              <div class="info-label">Salário Base</div>
+              <div class="info-value currency-kwanza" id="salary">600000</div>
+            </div>
+          </div>
+        </section>
+
+        <section class="section-card">
+          <div class="section-header">
+            <h2 class="section-title">Documentos</h2>
+          </div>
+          <ul class="documents-list">
+            <li class="document-item">
+              <div class="document-icon">
+                <i class="fas fa-file-contract"></i>
+              </div>
+              <div class="document-info">
+                <div class="document-title">Contrato de Trabalho</div>
+                <div class="document-date">Atualizado em 01/01/2024</div>
+              </div>
+              <a href="#" class="document-action">Visualizar</a>
+            </li>
+            <li class="document-item">
+              <div class="document-icon">
+                <i class="fas fa-file-alt"></i>
+              </div>
+              <div class="document-info">
+                <div class="document-title">Documentos Pessoais</div>
+                <div class="document-date">Atualizado em 01/01/2024</div>
+              </div>
+              <a href="#" class="document-action">Visualizar</a>
+            </li>
+          </ul>
+        </section>
+      </div>
+    </div>
+  </main>
+</div>
+
+<script>
+class ProfileManager {
+  constructor() {
+    this.employeeData = {
+      id: '001',
+      fullName: 'Nome do Funcionário',
+      birthDate: '01/01/1990',
+      email: 'funcionario@gracasobregraca.com',
+      phone: '+244 923 456 789',
+      position: 'Analista',
+      department: 'Tecnologia',
+      hireDate: '01/01/2023',
+      salary: 600000
+    };
+  }
+
+  initialize() {
+    this.loadEmployeeData();
+  }
+
+  loadEmployeeData() {
+    // Preenche os campos com os dados do funcionário
+    for (const [key, value] of Object.entries(this.employeeData)) {
+      const element = document.getElementById(key);
+      if (element) {
+        if (key === 'salary') {
+          element.textContent = value.toLocaleString('pt-AO');
+        } else {
+          element.textContent = value;
+        }
+      }
+    }
+  }
+}
+
+function editPersonalInfo() {
+  // Implementação futura do modal de edição
+  alert('Funcionalidade de edição em desenvolvimento');
+}
+
+function handleLogout() {
+  window.location.href = '/login';
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+  const profileManager = new ProfileManager();
+  profileManager.initialize();
+});
+</script>
+
+</body></html>
