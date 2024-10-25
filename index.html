@@ -1,0 +1,508 @@
+<html><head><base href="/dashboard/payroll/dashboard">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dashboard - Graça sobre Graça</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<style>
+:root {
+  --primary: #2a1b6d;
+  --secondary: #38b6ff;
+  --success: #2ecc71;
+  --warning: #f1c40f;
+  --danger: #e74c3c;
+  --light: #f8f9fa;
+  --dark: #2d3436;
+  --gradient: linear-gradient(135deg, var(--primary), var(--secondary));
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Poppins', sans-serif;
+}
+
+body {
+  background: #f0f2f5;
+  min-height: 100vh;
+}
+
+.dashboard-container {
+  display: flex;
+  min-height: 100vh;
+}
+
+.sidebar {
+  width: 280px;
+  background: white;
+  padding: 2rem;
+  box-shadow: 2px 0 20px rgba(0,0,0,0.1);
+}
+
+.sidebar-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+.sidebar-logo {
+  width: 100px;
+  height: auto;
+  margin-right: 1rem;
+}
+
+.menu-item {
+  display: flex;
+  align-items: center;
+  padding: 1rem;
+  color: var(--dark);
+  text-decoration: none;
+  border-radius: 10px;
+  margin-bottom: 0.5rem;
+  transition: all 0.3s;
+}
+
+.menu-item i {
+  margin-right: 1rem;
+  font-size: 1.2rem;
+}
+
+.menu-item:hover {
+  background: var(--gradient);
+  color: white;
+  transform: translateX(5px);
+}
+
+.menu-item.active {
+  background: var(--gradient);
+  color: white;
+}
+
+.main-content {
+  flex: 1;
+  padding: 2rem;
+}
+
+.welcome-section {
+  background: var(--gradient);
+  color: white;
+  padding: 2rem;
+  border-radius: 15px;
+  margin-bottom: 2rem;
+}
+
+.welcome-title {
+  font-size: 1.8rem;
+  margin-bottom: 1rem;
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.stat-card {
+  background: white;
+  padding: 1.5rem;
+  border-radius: 15px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+.stat-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.stat-title {
+  color: #666;
+  font-size: 1rem;
+}
+
+.stat-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--gradient);
+  color: white;
+}
+
+.stat-value {
+  font-size: 1.8rem;
+  font-weight: 600;
+  color: var(--primary);
+  margin-bottom: 0.5rem;
+}
+
+.stat-change {
+  font-size: 0.9rem;
+  color: var(--success);
+}
+
+.charts-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.chart-card {
+  background: white;
+  padding: 1.5rem;
+  border-radius: 15px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+.chart-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.chart-title {
+  font-size: 1.2rem;
+  color: var(--primary);
+}
+
+.chart-container {
+  position: relative;
+  height: 300px;
+}
+
+.recent-activity {
+  background: white;
+  padding: 1.5rem;
+  border-radius: 15px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+.activity-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.activity-title {
+  font-size: 1.2rem;
+  color: var(--primary);
+}
+
+.activity-list {
+  list-style: none;
+}
+
+.activity-item {
+  display: flex;
+  align-items: center;
+  padding: 1rem 0;
+  border-bottom: 1px solid #eee;
+}
+
+.activity-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 1rem;
+}
+
+.activity-details {
+  flex: 1;
+}
+
+.activity-message {
+  margin-bottom: 0.3rem;
+}
+
+.activity-time {
+  font-size: 0.9rem;
+  color: #666;
+}
+
+.currency-kwanza {
+  position: relative;
+}
+
+.currency-kwanza::after {
+  content: 'Kz';
+  margin-left: 4px;
+  font-size: 0.8em;
+  opacity: 0.8;
+}
+
+</style>
+</head>
+<body>
+
+<div class="dashboard-container">
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <img src="/a/2f069ac4-a9ac-4e73-b5d1-45799dbf53aa" alt="Logo Graça sobre Graça" class="sidebar-logo" width="100" height="100">
+    </div>
+    
+    <nav>
+      <a href="/dashboard" class="menu-item active">
+        <i class="fas fa-home"></i>
+        Dashboard
+      </a>
+      <a href="/dashboard/payroll/profile" class="menu-item">
+        <i class="fas fa-user"></i>
+        Perfil
+      </a>
+      <a href="/dashboard/payroll/attendance" class="menu-item">
+        <i class="fas fa-calendar-check"></i>
+        Presenças
+      </a>
+      <a href="/dashboard/payroll/requests" class="menu-item">
+        <i class="fas fa-paper-plane"></i>
+        Solicitações
+      </a>
+      <a href="/dashboard/payroll" class="menu-item">
+        <i class="fas fa-money-bill-wave"></i>
+        Remunerações
+      </a>
+      <a href="/settings" class="menu-item">
+        <i class="fas fa-cog"></i>
+        Configurações
+      </a>
+      <a href="#" class="menu-item" onclick="handleLogout()">
+        <i class="fas fa-sign-out-alt"></i>
+        Sair
+      </a>
+    </nav>
+  </aside>
+
+  <main class="main-content">
+    <section class="welcome-section">
+      <h1 class="welcome-title">Bem-vindo ao Dashboard</h1>
+      <p id="currentDateTime"></p>
+    </section>
+
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-header">
+          <span class="stat-title">Salário Base</span>
+          <div class="stat-icon">
+            <i class="fas fa-wallet"></i>
+          </div>
+        </div>
+        <div class="stat-value currency-kwanza" id="baseSalary">0</div>
+        <div class="stat-change">
+          <i class="fas fa-arrow-up"></i> Último aumento: Jan 2024
+        </div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-header">
+          <span class="stat-title">Dias Trabalhados</span>
+          <div class="stat-icon">
+            <i class="fas fa-calendar-day"></i>
+          </div>
+        </div>
+        <div class="stat-value" id="workedDays">0</div>
+        <div class="stat-change">Este mês</div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-header">
+          <span class="stat-title">Faltas</span>
+          <div class="stat-icon">
+            <i class="fas fa-calendar-times"></i>
+          </div>
+        </div>
+        <div class="stat-value" id="absences">0</div>
+        <div class="stat-change">Este mês</div>
+      </div>
+    </div>
+
+    <div class="charts-grid">
+      <div class="chart-card">
+        <div class="chart-header">
+          <h3 class="chart-title">Histórico Salarial</h3>
+        </div>
+        <div class="chart-container">
+          <canvas id="salaryChart"></canvas>
+        </div>
+      </div>
+
+      <div class="chart-card">
+        <div class="chart-header">
+          <h3 class="chart-title">Presenças vs Faltas</h3>
+        </div>
+        <div class="chart-container">
+          <canvas id="attendanceChart"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <div class="recent-activity">
+      <div class="activity-header">
+        <h3 class="activity-title">Atividades Recentes</h3>
+      </div>
+      <ul class="activity-list" id="activityList">
+        <!-- Preenchido via JavaScript -->
+      </ul>
+    </div>
+  </main>
+</div>
+
+<script>
+class DashboardSystem {
+  constructor() {
+    this.currentEmployee = {
+      id: 1,
+      name: "Funcionário",
+      salary: 600000.00,
+      workedDays: 22,
+      absences: 1
+    };
+    
+    this.activities = [
+      {
+        message: "Registro de ponto realizado",
+        time: "Hoje, 08:00",
+        icon: "fa-clock",
+        color: "#2ecc71"
+      },
+      {
+        message: "Salário de Fevereiro processado",
+        time: "Ontem, 15:30",
+        icon: "fa-money-bill-wave",
+        color: "#38b6ff"
+      },
+      {
+        message: "Nova solicitação de férias enviada",
+        time: "22/02/2024, 14:15",
+        icon: "fa-plane",
+        color: "#f1c40f"
+      }
+    ];
+  }
+
+  initialize() {
+    this.updateDateTime();
+    this.updateEmployeeInfo();
+    this.createSalaryChart();
+    this.createAttendanceChart();
+    this.updateActivityList();
+    setInterval(() => this.updateDateTime(), 1000);
+  }
+
+  updateDateTime() {
+    const now = new Date();
+    const dateTimeStr = now.toLocaleString('pt-BR', { 
+      dateStyle: 'full', 
+      timeStyle: 'short' 
+    });
+    document.getElementById('currentDateTime').textContent = dateTimeStr;
+  }
+
+  updateEmployeeInfo() {
+    document.getElementById('baseSalary').textContent = 
+      this.currentEmployee.salary.toLocaleString('pt-AO');
+    document.getElementById('workedDays').textContent = 
+      this.currentEmployee.workedDays;
+    document.getElementById('absences').textContent = 
+      this.currentEmployee.absences;
+  }
+
+  createSalaryChart() {
+    const ctx = document.getElementById('salaryChart').getContext('2d');
+    new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: ['Out', 'Nov', 'Dez', 'Jan', 'Fev', 'Mar'],
+        datasets: [{
+          label: 'Salário Líquido (Kz)',
+          data: [550000, 550000, 550000, 600000, 600000, 600000],
+          borderColor: '#2a1b6d',
+          tension: 0.3,
+          fill: false
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: {
+            display: false
+          }
+        },
+        scales: {
+          y: {
+            beginAtZero: false,
+            ticks: {
+              callback: function(value) {
+                return value.toLocaleString('pt-AO') + ' Kz';
+              }
+            }
+          }
+        }
+      }
+    });
+  }
+
+  createAttendanceChart() {
+    const ctx = document.getElementById('attendanceChart').getContext('2d');
+    new Chart(ctx, {
+      type: 'doughnut',
+      data: {
+        labels: ['Presenças', 'Faltas'],
+        datasets: [{
+          data: [22, 1],
+          backgroundColor: ['#2ecc71', '#e74c3c']
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: {
+            position: 'bottom'
+          }
+        }
+      }
+    });
+  }
+
+  updateActivityList() {
+    const activityList = document.getElementById('activityList');
+    activityList.innerHTML = this.activities.map(activity => `
+      <li class="activity-item">
+        <div class="activity-icon" style="background-color: ${activity.color}">
+          <i class="fas ${activity.icon}"></i>
+        </div>
+        <div class="activity-details">
+          <div class="activity-message">${activity.message}</div>
+          <div class="activity-time">${activity.time}</div>
+        </div>
+      </li>
+    `).join('');
+  }
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+  const dashboard = new DashboardSystem();
+  dashboard.initialize();
+});
+
+function handleLogout() {
+  window.location.href = '/login';
+}
+</script>
+
+</body></html>
